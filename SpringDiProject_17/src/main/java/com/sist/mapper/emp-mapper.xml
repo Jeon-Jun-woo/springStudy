@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.EmpMapper">
+ <resultMap type="EmpVO" id="empMap">
+   <result property="dvo.dname" column="dname"/>
+   <result property="dvo.loc" column="loc"/>
+   <result property="svo.grade" column="grade"/>
+   <!-- 
+   		SELECT ename,dname,loc,grade
+   		ResultSet rs=ps.executeQuery();
+   		while(rs.next())
+   		{
+   			EmpVO vo=new EmpVO();
+   			vo.setEname(rs.getString("ename"));
+   			vo.getDvo().setDname(rs.getString("dname"));
+   		}
+    -->
+ </resultMap>
+ <sql id="emp-join">
+  SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD') as dbday,
+   		  sal,emp.deptno,dname,loc,grade
+   FROM emp,dept,salgrade
+   WHERE emp.deptno=dept.deptno
+   AND sal BETWEEN losal AND hisal 
+ </sql>
+ 
+ <select id="empAllData" resultMap="empMap">
+   <include refid="emp-join"/>
+ </select>
+ <select id="empDetailData" resultMap="empMap" parameterType="int">
+  <include refid="emp-join"/>
+  AND empno=#{empno}
+ </select>
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<!--  사용자 정의 메모리 할당 -->
+	<context:component-scan base-package="com.sist.*"/>
+	<!-- 
+		선택적인 메모리 할당
+		@Component : 일반 클래스(~Manager,MainClass)
+		@Repository : DAO ( 저장소)
+		@Service : BI ( DAO여러개를 통합후 사용)
+		====================
+		@Controller : Model => 화면 제어
+		@RestController : Model => RestFul
+						  => 다른 프로그램과 연결
+						  => 자바 <=> JavaScript
+						  	    JSON
+						    => GET/POST/PUT/DELETE
+		@ControllerAdvice: 웹에서 통합 예외 처리
+		==================== Web에서만 사용
+ 		@Configuration => 5버전 권장
+ 						  =>XML대신 자바 => 클래스 등록
+ 		
+ 		*** 스프링은 클래스 관리자 	
+ 				=> 생성 / 소멸/ 필요시에는 멤버변수 초기화  
+ 							  ===================== 주입
+ 							    => setter , 생성자 매개변수
+ 		메모리 할당시 필요한 데이터를 주입(DI)
+ 		  => 작은 의미 : 멤버변수 초기화
+ 		  => 큰 의미 : 클래스와 클래스의 연관 관계설정 => 매뉴얼
+ 		@Autowired : 스프링안에 이미 생성되어 있는 클래스 객체 주소를
+ 					 찾아서 자동 주입
+ 					 => getBean("")
+ 					   
+ 		@PostConstruct  : 메소드 호출이 가능
+ 						  생성시 자동 호출
+ 						  => init-method
+ 		@PreDestroy  : 소멸시에 자동 호출
+ 						 => destroy-method
+ 		@Resource : 선택적으로 객체 선택 => 1.8까지 사용이 가능 
+ 		1.8버전 => 가장 호환성이 좋다
+ 		   => 스프링부트 (3.0) , 스프링 6 : 람다
+ 		   		=> @RequestMapping 제거
+ 		   				=> @GetMapping/@PostMapping
+ 		메모리 할당 요청
+ 		===========
+ 		1. 클래스 한개 <bean>
+ 		   => 라이브러리 클래스 ( MyBatis)
+ 		2. 페키지 단위 <context:component-scan base-package="">
+ 		   => 사용자 정의 클래스
+ 		   => ~VO는 클래스 => 데이터형
+ 		   => 대부분은 싱글턴
+ 		   <bean scope="prototype">
+ 		   @Component
+ 		   @Scope("prototype") => clone() : 메모리 복제
+	 -->
+	<!--  데이터베이스 관련 -->
+	<!--  데이터베이스 연결과 관련된 정보를 모음 -->
+	<bean id="ds"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		p:driverClassName="oracle.jdbc.driver.OracleDriver"
+		p:url="jdbc:oracle:thin:@localhost:1521:XE"
+		p:username="hr"
+		p:password="happy"
+	/>
+	<!--  maxActive="8" maxIdle="8" maxWait="10000"  ( 디폴트 )-->
+	<!--  MyBatis에 전송 
+		  getConnection / disConnection
+	-->
+	<bean id="ssf" 
+		class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="ds"
+	/>
+	<!--  interface(mapper)를 구현하는 클래스로 전송 -->
+	<bean id="mapper"
+		class="org.mybatis.spring.mapper.MapperFactoryBean"
+		p:sqlSessionFactory-ref="ssf"
+		p:mapperInterface="com.sist.mapper.EmpMapper"
+ 	/>
+ 	<!--  사용자 정의 DAO로 mapper객체 전송 요청 -->
+ 	<!--  XML 코딩 에서 어노테이션 선택
+ 			@Repostory
+ 			=> @Autowired -->
+ 	 <!--  위에서 메모리 할당 통으로해서 안해도됨 -->
+</beans>
