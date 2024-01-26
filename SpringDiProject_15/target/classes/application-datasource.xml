@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource"
+		p:driverClassName="oracle.jdbc.driver.OracleDriver"
+		p:url="jdbc:oracle:thin:@localhost:1521:XE"
+		p:username="hr"
+		p:password="happy"
+		p:maxActive="10"
+		p:maxIdle="10"
+		p:maxWait="-1" 
+	/>
+	<!--  Transaction 설정 -->
+	<!--  log파일 설정 -->
+	<!--  SqlSessionFactory등록(MyBatis) -->
+	<bean id="ssf" class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="ds"
+	/>
+	<!--  @Bean("ssf") -->
+	<!--  Mapper구현 클래스 -->
+	<mybatis-spring:scan base-package="com.sist.mapper"
+	  factory-ref="ssf"
+	/>
+	
+	
+
+</beans>

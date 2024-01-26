@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!--  클래스등록
+			1. 메모리 할당
+			2. setXxx() => 값을 채워준다
+			3. Map에 저장
+			   ========== getBean() ====== map에 key는 중복할 수 없다
+			*** 등록되지 않은 클래스는  스프링에서 찾을 수 없다
+	 -->
+	 <bean id="sa" class="com.sist.spring.Sawon"
+	 	p:sabun="1"
+	 	p:name="홍길동"
+	 	p:sex="남자"
+	 />
+	 <!--  
+	 	  Class className=Class.forName(class명)
+	 	  Object obj=className.newInstance()
+	 	  
+	 	  map.put(id명,obj) => 클래스주소가 변경되지 않는다
+	 	    => 객체 주소 한개만 사용 (싱글턴) 
+	 -->
+	 
+	 <!-- 
+	 
+	 	p:name="" p:name-ref=""
+	 	일반 변수 설정   클래스 객체 주소
+	  -->
+	  <bean id="mem" class="com.sist.spring.Member"
+	    c:mno="1"
+	    c:name="심청이"
+	    c:address="서울"
+	  />
+	  <bean id="mem1" class="com.sist.spring.Member"
+	    c:_0="2"
+	    c:_1="박문수"
+	    c:_2="부산"
+	  />
+	  <bean id="mem2" class="com.sist.spring.Member">
+	    <constructor-arg index="0">
+	      <value>3</value>
+	    </constructor-arg>
+	    
+	    <constructor-arg index="1">
+	      <value>이순신</value>
+	    </constructor-arg>
+	    
+	    <constructor-arg index="2" value="제주"/>
+	    
+	  </bean>
+</beans>

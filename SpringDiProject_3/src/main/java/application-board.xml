@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 
+		사용자 정의 클래스 등록 = application-context.xml
+		데이터베이스 연결 = application-datasource.xml
+		채팅 = application-webchat.xml
+		보안 = application-security.xml
+	
+	 -->
+	<bean id="board" class="com.sist.spring.Board"
+		p:no="1"
+		p:name="홍길동"
+		p:subject="게시판"
+	/>
+</beans>

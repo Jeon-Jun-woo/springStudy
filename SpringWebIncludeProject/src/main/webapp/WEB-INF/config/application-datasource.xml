@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+	<!-- 
+		1. 데이터베이스 정보를 모아서 전송
+		2. SqlSessionFactoryBean => getConnection/disConnection
+		3. SQL문장을 읽어서 구현(인터페이스 구현)
+			= 힌개씩 구현
+			= 패키지 단위 구현
+	 -->
+	 <bean id="ds"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		p:driverClassName="oracle.jdbc.driver.OracleDriver"
+		p:url="jdbc:oracle:thin:@localhost:1521:XE"
+		p:username="hr"
+		p:password="happy"
+	 />
+	<!--  Transcation 등록 -->
+	<tx:annotation-driven/>
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="ds"
+	/>
+	<!--  SqlSessionFactory -->
+	 <bean id="ssf"
+		class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="ds"
+		p:configLocation="/WEB-INF/config/Config.xml"
+	 />
+	<!--  Mapper구현 요청 -->
+	 <mybatis-spring:scan base-package="com.sist.mapper"
+		factory-ref="ssf"
+	 />
+
+</beans>

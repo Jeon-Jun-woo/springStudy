@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Connection : getConnection/disConnection -->
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <!-- VO등록 -->
+  <typeAliases>
+    <typeAlias type="com.sist.vo.DataBoardVO" alias="DataBoardVO"/>
+  </typeAliases>
+  <!-- 데이터베이스 연결 -->
+  <environments default="development">
+    <environment id="development">
+     <transactionManager type="JDBC"/>
+     <!-- COMMIT / ROLLBACK : AutoCommit -->
+     <dataSource type="POOLED">
+       <!--  POOLED(Connection) / UNPOOLED(일반 JDBC) -->
+       <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+       <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+       <property name="username" value="hr"/>
+       <property name="password" value="happy"/>
+       <!-- 
+            MaxActive => 8
+            MaxIdle  => 8
+        -->
+     </dataSource>
+    </environment>
+  </environments>
+  <!-- SQL 문장 전송  -->
+  <mappers>
+    <mapper resource="com/sist/dao/databoard_mapper.xml"/>
+  </mappers>
+</configuration>
